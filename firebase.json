@@ -1,0 +1,28 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "instagram-2a149",
+          "appId": "1:627695306168:android:b942be0130dd3b91bfbb4d",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "instagram-2a149",
+          "configurations": {
+            "android": "1:627695306168:android:b942be0130dd3b91bfbb4d",
+            "ios": "1:627695306168:ios:636fe62cec8833babfbb4d",
+            "macos": "1:627695306168:ios:636fe62cec8833babfbb4d",
+            "web": "1:627695306168:web:3d30921d0466e9d2bfbb4d",
+            "windows": "1:627695306168:web:198e81ac5175a338bfbb4d"
+          }
+        }
+      }
+    }
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
