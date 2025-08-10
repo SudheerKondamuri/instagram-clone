@@ -1,5 +1,11 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:instagram/data/firebase_services/firebase_auth.dart';
+import 'package:instagram/data/firebase_services/supabase_servecies.dart/storage_bucket.dart';
+import 'package:instagram/util/dailog_box.dart';
+import 'package:instagram/util/exceptions.dart';
 
 class SignupPage extends StatefulWidget {
   final VoidCallback togglePage;
@@ -30,20 +36,24 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             children: [
               SizedBox(height: 45.h),
-              Center(child: Image.asset('assets/logo.jpg')),
+              Center(child: Image.asset('assets/pictures/logo.jpg')),
               SizedBox(height: 50.h),
-              SizedBox(
-                //color: Colors.black,
-                height: 60.h,
+              Center(
+                child: InkWell(
+                  onTap: () async {
+                    try {
+                      await StorageBucket().uploadProfilePic();
+                    } catch (e) {}
+                  },
 
-                child: Center(
                   child: CircleAvatar(
-                    radius: 34.r,
+                    radius: 39.r,
                     backgroundColor: Colors.grey.shade200,
                     backgroundImage: AssetImage('assets/pictures/person.png'),
                   ),
                 ),
               ),
+
               SizedBox(height: 50.h),
               Textfeild(email, Icons.email_outlined, 'Email', email_f),
               SizedBox(height: 15.h),
@@ -60,7 +70,7 @@ class _SignupPageState extends State<SignupPage> {
                 confirmpassw_f,
               ),
               SizedBox(height: 10.h),
-              signIn(),
+              Signup(),
               SizedBox(height: 10.h),
               logIn(),
             ],
@@ -70,22 +80,39 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget signIn() {
-    return Container(
-      height: 48.h,
-      width: double.infinity,
-      alignment: Alignment.center,
-      margin: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      child: Text(
-        "Sign in",
-        style: TextStyle(
-          fontSize: 23.sp,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
+  Widget Signup() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: InkWell(
+        onTap: () async {
+          try {
+            await Authentication().signUp(
+              email: email.text,
+              password: password.text,
+              confirmpass: confirmpass.text,
+              username: username.text,
+              bio: bio.text,
+            );
+          } on Exceptions catch (e) {
+            dailogBuilder(context, e.toString());
+          }
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: double.infinity,
+          height: 44.h,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Text(
+            'Sign up',
+            style: TextStyle(
+              fontSize: 23.sp,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
@@ -141,8 +168,8 @@ class _SignupPageState extends State<SignupPage> {
             hintText: type,
             prefixIcon: Icon(icon),
             contentPadding: EdgeInsets.symmetric(
-              horizontal: 15.w,
-              vertical: 15.h,
+              horizontal: 10.w,
+              vertical: 10.h,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7),
